@@ -1,0 +1,814 @@
+
+Copy
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Junior DevOps & Cloud Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+ 
+  <style>
+    /* ─── Reset & Base ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --bg:        #0d0f11;
+      --bg2:       #12151a;
+      --bg3:       #181c22;
+      --border:    #252b34;
+      --muted:     #4a5261;
+      --text-dim:  #8993a4;
+      --text:      #c9d1de;
+      --text-hi:   #eef1f6;
+      --accent:    #4fffb0;
+      --accent2:   #38bdf8;
+      --accent-dim:#1a3d2e;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-mono:  'DM Mono', 'Courier New', monospace;
+      --font-sans:  'DM Sans', sans-serif;
+      --radius:     6px;
+      --max-w:      860px;
+      --ease:       cubic-bezier(.16,1,.3,1);
+    }
+ 
+    html { scroll-behavior: smooth; font-size: 16px; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+ 
+    /* ─── Noise overlay ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+ 
+    /* ─── Nav ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: background .4s var(--ease), border-color .4s var(--ease), backdrop-filter .4s;
+    }
+    nav.scrolled {
+      background: rgba(13,15,17,.82);
+      border-color: var(--border);
+      backdrop-filter: blur(14px);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text-hi); }
+ 
+    /* ─── Hero ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+    }
+    .hero-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      animation: fadeUp .7s var(--ease) .2s forwards;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text-hi);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .8s var(--ease) .35s forwards;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .8s var(--ease) .5s forwards;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .8s var(--ease) .65s forwards;
+    }
+    .btn {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: .7rem 1.6rem;
+      border-radius: var(--radius);
+      transition: all .25s var(--ease);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0a1410;
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background: #7fffd4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(79,255,176,.22);
+    }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+ 
+    /* hero bg glow */
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,255,176,.055) 0%, transparent 70%);
+      top: 10%; right: -100px;
+      pointer-events: none;
+    }
+ 
+    /* ─── Section common ─────────────────────────────────── */
+    section {
+      padding: 6rem 2rem;
+      position: relative;
+    }
+    .section-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+    h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+      color: var(--text-hi);
+      margin-bottom: 2.5rem;
+      line-height: 1.2;
+    }
+ 
+    /* divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+ 
+    /* ─── About ──────────────────────────────────────────── */
+    #about { background: var(--bg); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .about-text p {
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+      font-size: .975rem;
+    }
+    .about-text p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+ 
+    /* skills chips */
+    .skills-block { }
+    .skills-group { margin-bottom: 1.75rem; }
+    .skills-group-title {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .75rem;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+    .chip {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      padding: .3rem .7rem;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text-dim);
+      transition: all .2s;
+      cursor: default;
+    }
+    .chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+ 
+    /* interests list */
+    .interests {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+    .interest-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .88rem;
+      color: var(--text-dim);
+    }
+    .interest-item::before {
+      content: '→';
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-size: .75rem;
+    }
+ 
+    /* ─── Work ───────────────────────────────────────────── */
+    #work { background: var(--bg); }
+ 
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
+    }
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.6rem;
+      transition: border-color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s var(--ease);
+    }
+    .project-card:hover {
+      border-color: rgba(79,255,176,.25);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.4);
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+ 
+    .project-icon {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .project-title {
+      font-family: var(--font-sans);
+      font-size: .975rem;
+      font-weight: 500;
+      color: var(--text-hi);
+      margin-bottom: .5rem;
+    }
+    .project-desc {
+      font-size: .845rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+    }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      padding: .2rem .55rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text-dim);
+      letter-spacing: .04em;
+    }
+ 
+    /* ─── Featured project card ──────────────────────────── */
+    .project-featured {
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #12181f 0%, #0f1a16 100%);
+      border-color: rgba(79,255,176,.2);
+      position: relative;
+    }
+    .project-featured::before {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(1) !important;
+    }
+    .featured-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(79,255,176,.25);
+      border-radius: 3px;
+      padding: .2rem .6rem;
+      margin-bottom: 1rem;
+    }
+    .project-featured .project-title {
+      font-size: 1.1rem;
+      margin-bottom: .75rem;
+    }
+    .project-highlights {
+      margin: 1rem 0 .25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+    }
+    .highlight-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .85rem;
+      color: var(--text-dim);
+    }
+    .highlight-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .highlight-item code {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: .05rem .35rem;
+      border-radius: 3px;
+    }
+ 
+    /* ─── Contact ────────────────────────────────────────── */
+    #contact { background: var(--bg); }
+    .contact-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(79,255,176,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .contact-box h2 { margin-bottom: .75rem; }
+    .contact-sub {
+      color: var(--text-dim);
+      max-width: 440px;
+      margin: 0 auto 2.5rem;
+      font-size: .95rem;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: .65rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all .25s var(--ease);
+    }
+    .contact-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      transform: translateY(-2px);
+    }
+    .contact-link svg {
+      width: 14px; height: 14px;
+      fill: currentColor;
+    }
+ 
+    /* ─── Footer ─────────────────────────────────────────── */
+    footer {
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+ 
+    /* ─── Animations ─────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+ 
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+ 
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      #hero { padding: 6rem 1.25rem 3rem; }
+      section { padding: 4.5rem 1.25rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .contact-box { padding: 2rem 1.25rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+      .nav-links { gap: .9rem; }
+      .nav-links a { font-size: .65rem; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <!-- ── Nav ─────────────────────────────── -->
+  <nav id="nav">
+    <a class="nav-logo" href="#hero">devops.engineer</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+ 
+  <!-- ── Hero ────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-tag">Available for opportunities</p>
+      <h1>Junior DevOps<br>&amp; <em>Cloud</em> Engineer</h1>
+      <p class="hero-sub">
+        Biochemistry graduate turned cloud infrastructure engineer — building scalable, automated, and reliable systems across AWS, Azure, and GCP.
+      </p>
+      <div class="hero-cta">
+        <a href="#work" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+ 
+  <div class="divider"></div>
+ 
+  <!-- ── About ───────────────────────────── -->
+  <section id="about">
+    <div class="section-inner">
+      <p class="section-label reveal">About</p>
+      <h2 class="reveal">Background &amp; Skills</h2>
+ 
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            I'm a <strong>passionate, growth-driven Junior DevOps &amp; Cloud Engineer</strong> with an
+            unconventional background — a Biochemistry degree that sharpened my analytical thinking
+            before I transitioned fully into cloud infrastructure and automation.
+          </p>
+          <p>
+            Through intensive hands-on training and self-directed projects, I've built practical
+            experience with <strong>AWS, Azure, and GCP</strong> — covering networking, storage,
+            compute, databases, and cloud security fundamentals.
+          </p>
+          <p>
+            My background in public health education has strengthened my communication,
+            adaptability, and ability to simplify complex systems — skills I bring alongside
+            my technical work every day.
+          </p>
+          <p>
+            I'm currently seeking roles as a <strong>Junior DevOps Engineer, Cloud Engineer,
+            Technical Support Engineer, or DevOps Intern</strong> where I can contribute
+            meaningfully and keep growing.
+          </p>
+ 
+          <div class="interests">
+            <div class="interest-item">Cloud Infrastructure &amp; Automation</div>
+            <div class="interest-item">CI/CD &amp; Deployment Engineering</div>
+            <div class="interest-item">Containerization &amp; Kubernetes</div>
+            <div class="interest-item">Linux Systems Administration</div>
+            <div class="interest-item">Infrastructure Monitoring &amp; Scalability</div>
+            <div class="interest-item">Platform &amp; Technical Operations</div>
+          </div>
+        </div>
+ 
+        <div class="skills-block reveal">
+          <div class="skills-group">
+            <p class="skills-group-title">Cloud Platforms</p>
+            <div class="chips">
+              <span class="chip">AWS</span>
+              <span class="chip">Microsoft Azure</span>
+              <span class="chip">GCP</span>
+            </div>
+          </div>
+          <div class="skills-group">
+            <p class="skills-group-title">Containers &amp; Orchestration</p>
+            <div class="chips">
+              <span class="chip">Docker</span>
+              <span class="chip">Docker Compose</span>
+              <span class="chip">Kubernetes</span>
+            </div>
+          </div>
+          <div class="skills-group">
+            <p class="skills-group-title">CI/CD &amp; Automation</p>
+            <div class="chips">
+              <span class="chip">GitHub Actions</span>
+              <span class="chip">CI/CD Pipelines</span>
+              <span class="chip">Bash Scripting</span>
+              <span class="chip">Cron Jobs</span>
+            </div>
+          </div>
+          <div class="skills-group">
+            <p class="skills-group-title">Systems &amp; Infrastructure</p>
+            <div class="chips">
+              <span class="chip">Linux Admin</span>
+              <span class="chip">Cloud Networking</span>
+              <span class="chip">Cloud Security</span>
+              <span class="chip">IaC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <div class="divider"></div>
+ 
+  <!-- ── Work ────────────────────────────── -->
+  <section id="work">
+    <div class="section-inner">
+      <p class="section-label reveal">Work</p>
+      <h2 class="reveal">Projects &amp; Deployments</h2>
+ 
+      <!-- ── Featured Project ── -->
+      <div class="project-card project-featured reveal">
+        <div class="featured-badge">Featured Project</div>
+        <div class="project-icon">🚀</div>
+        <p class="project-title">AWS CI/CD Pipeline — Static Website Deployment</p>
+        <p class="project-desc">
+          Built and deployed a static HTML website using a complete end-to-end CI/CD pipeline on AWS. Hosted on an EC2 virtual server running NGINX, every push to GitHub automatically triggers a GitHub Actions workflow that SSHs into the server and deploys the latest code — zero manual intervention required.
+        </p>
+        <p class="project-desc">
+          Covers Linux server administration, SSH key authentication, NGINX configuration, YAML pipeline authoring, and integrating GitHub repositories with live cloud infrastructure — practical DevOps skills relevant to Junior DevOps, Cloud Engineering, and Infrastructure Support roles.
+        </p>
+        <div class="project-highlights">
+          <div class="highlight-item"><span class="highlight-dot"></span>Automated deployment on every <code>git push</code></div>
+          <div class="highlight-item"><span class="highlight-dot"></span>EC2 + NGINX production server setup</div>
+          <div class="highlight-item"><span class="highlight-dot"></span>SSH key authentication &amp; secure remote access</div>
+          <div class="highlight-item"><span class="highlight-dot"></span>YAML-based GitHub Actions workflow</div>
+        </div>
+        <div class="project-tags" style="margin-top:1.25rem">
+          <span class="project-tag">AWS EC2</span>
+          <span class="project-tag">GitHub Actions</span>
+          <span class="project-tag">NGINX</span>
+          <span class="project-tag">Linux</span>
+          <span class="project-tag">SSH</span>
+          <span class="project-tag">YAML</span>
+          <span class="project-tag">CI/CD</span>
+        </div>
+      </div>
+ 
+      <div class="projects-grid">
+ 
+        <div class="project-card reveal">
+          <div class="project-icon">🐳</div>
+          <p class="project-title">Containerised App Deployment</p>
+          <p class="project-desc">
+            Deployed a multi-service web application using Docker and Docker Compose, managing service networking, volumes, and environment configuration.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Docker</span>
+            <span class="project-tag">Docker Compose</span>
+            <span class="project-tag">Linux</span>
+          </div>
+        </div>
+ 
+        <div class="project-card reveal">
+          <div class="project-icon">☁️</div>
+          <p class="project-title">Cloud Infrastructure Setup (AWS)</p>
+          <p class="project-desc">
+            Configured VPCs, subnets, security groups, EC2 instances, and S3 buckets to build a production-ready cloud environment from scratch.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">AWS</span>
+            <span class="project-tag">VPC</span>
+            <span class="project-tag">EC2</span>
+            <span class="project-tag">S3</span>
+          </div>
+        </div>
+ 
+        <div class="project-card reveal">
+          <div class="project-icon">☸️</div>
+          <p class="project-title">Kubernetes Cluster Deployment</p>
+          <p class="project-desc">
+            Deployed and managed a containerised application on a Kubernetes cluster, handling pods, services, deployments, and basic scaling configurations.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Kubernetes</span>
+            <span class="project-tag">kubectl</span>
+            <span class="project-tag">Docker</span>
+          </div>
+        </div>
+ 
+        <div class="project-card reveal">
+          <div class="project-icon">🔧</div>
+          <p class="project-title">Bash Automation Scripts</p>
+          <p class="project-desc">
+            Wrote Bash scripts and cron jobs to automate system monitoring, log rotation, backups, and server health checks on Linux servers.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Bash</span>
+            <span class="project-tag">Cron</span>
+            <span class="project-tag">Linux</span>
+          </div>
+        </div>
+ 
+        <div class="project-card reveal">
+          <div class="project-icon">🔵</div>
+          <p class="project-title">Azure Cloud Environment</p>
+          <p class="project-desc">
+            Provisioned and configured Azure resources including virtual machines, resource groups, and storage accounts, exploring Azure's core services and IAM.
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Azure</span>
+            <span class="project-tag">IAM</span>
+            <span class="project-tag">Storage</span>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+  </section>
+ 
+  <div class="divider"></div>
+ 
+  <!-- ── Contact ──────────────────────────── -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-box reveal">
+        <p class="section-label">Contact</p>
+        <h2>Let's Work Together</h2>
+        <p class="contact-sub">
+          Open to junior DevOps, cloud engineering, technical support, and internship roles.
+          Let's connect — I'd love to hear about what you're building.
+        </p>
+        <div class="contact-links">
+ 
+          <!-- Replace href values with your actual links -->
+          <a href="mailto:ibrahimpopoola@gmail.com" class="contact-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            Email Me
+          </a>
+ 
+          <a href="https://www.linkedin.com/in/ibrahim-popoola-12a0891b0" target="_blank" rel="noopener" class="contact-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452H17.21v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.985V9h3.114v1.561h.045c.434-.82 1.492-1.684 3.072-1.684 3.285 0 3.891 2.163 3.891 4.976v6.599zM5.337 7.433a1.804 1.804 0 110-3.608 1.804 1.804 0 010 3.608zM6.957 20.452H3.714V9H6.957v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.451C23.2 24 24 23.226 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
+ 
+          <a href="https://github.com/popsy208" target="_blank" rel="noopener" class="contact-link">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.3-5.467-1.332-5.467-5.93 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 013.003-.404c1.02.005 2.046.138 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.12 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.807 5.625-5.48 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .321.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            GitHub
+          </a>
+ 
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ── Footer ───────────────────────────── -->
+  <footer>
+    <span>Built with care &amp; plain HTML · &copy; 2025</span>
+  </footer>
+ 
+  <!-- ── Scripts ──────────────────────────── -->
+  <script>
+    // Sticky nav
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+ 
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          // stagger siblings
+          const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+          const idx = siblings.indexOf(e.target);
+          e.target.style.transitionDelay = `${idx * 80}ms`;
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  </script>
+ 
+</body>
+</html>
